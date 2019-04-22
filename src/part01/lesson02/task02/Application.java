@@ -12,17 +12,19 @@ public class Application {
         int negativeNumber = 0;
         int[] array = new int[N];
         for (int i = 0; i < N; i++) {
-            array[i] = RANDOM.nextInt(100) - 50;
-        }
-        for (int k: array) {
             try {
-                if (k < 0) throw new IllegalArgumentException("value is a negative");
-                double q = Math.sqrt(k);
-                int check = (int) q;
-                if (k != 0 && Math.pow(check, 2) == k) System.out.println("k=" + k + " q=" + q);
+                array[i] = RANDOM.nextInt(100) - 50;
+                if (array[i] < 0) throw new IllegalArgumentException("value is a negative");
             } catch (IllegalArgumentException e) {
+                i--;
                 negativeNumber++;
             }
+        }
+        for (int k : array) {
+            if (k < 0) throw new IllegalArgumentException("value is a negative");
+            double q = Math.sqrt(k);
+            int check = (int) q;
+            if (k != 0 && Math.pow(check, 2) == k) System.out.println("k=" + k + " q=" + q);
         }
         System.out.println("Count of negative numbers = " + negativeNumber);
     }
