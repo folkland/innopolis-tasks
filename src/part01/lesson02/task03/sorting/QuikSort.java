@@ -1,8 +1,6 @@
 package part01.lesson02.task03.sorting;
 
 import part01.lesson02.task03.Person;
-import part01.lesson02.task03.Sex;
-import part01.lesson02.task03.exception.SamePersonException;
 
 /**
  * Быстрая сортировка
@@ -11,6 +9,10 @@ import part01.lesson02.task03.exception.SamePersonException;
  */
 public class QuikSort extends SortingAbstractClass {
 
+    /**
+     * Using quick sort
+     * @param person array which need sort
+     */
     @Override
     public void sort(Person[] person) {
         long beginAlghorithm = System.currentTimeMillis();
@@ -35,10 +37,10 @@ public class QuikSort extends SortingAbstractClass {
         int center = start + (end - start) / 2;
         int i = start, j = end;
         while (i < j) {
-            while (i < center && !comparisonPerson(person[i], person[center])) {
+            while (i < center && person[i].compareTo(person[center]) < 0) {
                 i++;
             }
-            while (j > center && !comparisonPerson(person[center], person[j])) {
+            while (j > center && person[center].compareTo(person[j]) < 0) {
                 j--;
             }
             if (i < j) {
@@ -67,25 +69,27 @@ public class QuikSort extends SortingAbstractClass {
      * @param secondPerson объект, который лежит правее в массиве
      * @return true - нужно менять местами, false - не нужно
      */
-    private boolean comparisonPerson(Person firstPerson, Person secondPerson) {
-        if (!firstPerson.getSex().equals(secondPerson.getSex()) && Sex.getWOMAN().equals(firstPerson.getSex())) {
-            return true;
-        } else if (firstPerson.getAge() < secondPerson.getAge()) {
-            return true;
-        } else if (firstPerson.getAge() == secondPerson.getAge()) {
-            int check = firstPerson.getName().compareTo(secondPerson.getName());
-            if (check >= 0) {
-                try {
-                    if (check == 0) {
-                        throw new SamePersonException("I found same Person:" + firstPerson.toString());
-                    } else {
-                        return true;
-                    }
-                } catch (SamePersonException e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-        }
-        return false;
-    }
+//    private boolean comparisonPerson(Person firstPerson, Person secondPerson) {
+//        if (!firstPerson.getSex().equals(secondPerson.getSex())) {
+//            if (Sex.getWOMAN().equals(firstPerson.getSex())) {
+//                return true;
+//            }
+//        } else if (firstPerson.getAge() < secondPerson.getAge()) {
+//            return true;
+//        } else if (firstPerson.getAge() == secondPerson.getAge()) {
+//            int check = firstPerson.getName().compareTo(secondPerson.getName());
+//            if (check >= 0) {
+//                try {
+//                    if (check == 0) {
+//                        throw new SamePersonException("I found same Person:" + firstPerson.toString());
+//                    } else {
+//                        return true;
+//                    }
+//                } catch (SamePersonException e) {
+//                    System.out.println(e.getMessage());
+//                }
+//            }
+//        }
+//        return false;
+//    }
 }

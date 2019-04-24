@@ -15,7 +15,7 @@ import java.util.Locale;
  */
 public class Application {
 
-    private static final int PERSON_COUNT = 10000;
+    private static final int PERSON_COUNT = 10;
     private static SecureRandom random = new SecureRandom();
 
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -29,24 +29,28 @@ public class Application {
      */
     public static void main(String[] args) {
         Person[] personsBuble = createPersonArrays();
-        System.out.println("Before Sorting");
+//        System.out.println("Before Sorting");
 //        showPersons(personsBuble);
-        Person[] personsQuik = personsBuble;
-        Person[] personsComparator = personsBuble;
+        Person[] personsQuik = personsBuble.clone();
+        Person[] personsComparator = personsBuble.clone();
         BubleSort bubleSort = new BubleSort();
         QuikSort quikSort = new QuikSort();
         UsingComparator usingComparator = new UsingComparator();
         bubleSort.sort(personsBuble);
         quikSort.sort(personsQuik);
         usingComparator.sort(personsComparator);
-        System.out.println("Время сортировки пузырьком: " + bubleSort.time());
 //        showPersons(personsBuble);
+        System.out.println("Время сортировки пузырьком: " + bubleSort.time());
 //        showPersons(personsQuik);
         System.out.println("Время быстрой сортировки: " + quikSort.time());
 //        showPersons(personsComparator);
         System.out.println("Время сортировки компароторами: " + usingComparator.time());
     }
 
+    /**
+     * Create one random Person
+     * @return one new Person
+     */
     private static Person createPerson() {
         int age = random.nextInt(100);
         String sex;
@@ -59,6 +63,10 @@ public class Application {
         return new Person(name, age, sex);
     }
 
+    /**
+     * Create array of Person
+     * @return array of Person
+     */
     private static Person[] createPersonArrays() {
         Person[] persons = new Person[PERSON_COUNT];
         for (int i = 0; i < PERSON_COUNT; i++) {
@@ -67,6 +75,10 @@ public class Application {
         return persons;
     }
 
+    /**
+     * Create randon string, length from 3 to 12 sign
+     * @return random "name"
+     */
     private static String createName() {
         int lengthName = random.nextInt(10) + 3;
         char[] nameInChar = new char[lengthName];
@@ -77,6 +89,10 @@ public class Application {
         return String.valueOf(nameInChar);
     }
 
+    /**
+     * Show array in consol
+     * @param persons array to show
+     */
     private static void showPersons(Person[] persons) {
         for (Person person: persons) {
             System.out.println(person.toString());
