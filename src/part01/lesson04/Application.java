@@ -19,7 +19,7 @@ public class Application {
         System.out.println("После деления на 3");
         System.out.println(mathIntBox.dump());
 
-        System.out.println("");
+        System.out.println();
 
         CreateArray<Double> createDoubleArray = new CreateArray<>(Double.class);
         Number[] doubleArray = createDoubleArray.createArray(COUNT);
@@ -35,7 +35,7 @@ public class Application {
         System.out.println("После деления на 3");
         System.out.println(mathDoubleBox.dump());
 
-        System.out.println("");
+        System.out.println();
 
         CreateArray<Float> createFloatArray = new CreateArray<>(Float.class);
         Number[] floatArray = createFloatArray.createArray(COUNT);
