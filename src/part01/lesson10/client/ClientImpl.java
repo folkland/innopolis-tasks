@@ -27,7 +27,6 @@ public class ClientImpl {
 //            udpListener.start();
             new Thread(listener).start();
             sendMessage(clientName);
-            //TODO при считывании происходит ерись
             Scanner scanner = new Scanner(System.in);
             String text = "";
             while (!Params.QUIT_PHRASE.equals(text)) {
