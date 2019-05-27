@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * -Xmx50m -XX:+UseSerialGC -XX:MaxMetaspaceSize=2m  -> java.lang.OutOfMemoryError: Metaspace
  * -Xmx50m -XX:+UseSerialGC -> java.lang.OutOfMemoryError: Java heap space
  */
 public class Application {
