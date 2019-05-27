@@ -7,31 +7,41 @@ import java.net.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Connection between server and client by TCP
+ *
+ * @author folkland
+ */
 public class Connection implements Runnable {
 
     Socket socket;
     BufferedReader reader;
     String name;
     Database database;
+    BufferedWriter writer;
 
-    public Connection(Socket socket, String name, Database database) {
+    public Connection(Socket socket, String name, Database database, BufferedReader reader) {
         this.database = database;
         this.name = name;
         this.socket = socket;
+        this.reader = reader;
         try {
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Start thread with listener for client and send message to all client in chat
+     */
     @Override
     public void run() {
-        System.out.println("here");
         try {
             String message;
-            while ((message = reader.readLine()) != null) {
-                if (!Params.QUIT_PHRASE.equals(message)) {
+            while (true) {
+                message = reader.readLine();
+                if (Params.QUIT_PHRASE.equals(message)) {
                     database.remove(name);
                     writeMessageToAll(name + " has left from chat");
                     break;
@@ -41,6 +51,7 @@ public class Connection implements Runnable {
                     writePrivateMessage(nickname, name + ": " + message);
                     continue;
                 }
+                System.out.println("connection");
                 writeMessageToAll(name + ": " + message);
             }
             socket.close();
@@ -48,20 +59,29 @@ public class Connection implements Runnable {
             database.remove(name);
             writeMessageToAll(name + " has left from chat");
             System.out.println(name + " has left from chat");
-//            e.printStackTrace();
         }
     }
 
+    /**
+     * Write private message between few clients
+     *
+     * @param nickname client to whom send message
+     * @param message
+     */
     private void writePrivateMessage(String nickname, String message) {
         writeMessage(message);
         Connection connection = database.getConnections().get(nickname);
         connection.writeMessage(message);
     }
 
+    /**
+     * write message from server to client
+     *
+     * @param message text of message
+     */
     private void writeMessage(String message) {
         try {
             System.out.println("write");
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             writer.write(message);
             writer.newLine();
             writer.flush();
@@ -70,24 +90,16 @@ public class Connection implements Runnable {
         }
     }
 
+    /**
+     * Send message to all clients in chat
+     * @param message
+     */
     public void writeMessageToAll(String message) {
-//        try {
-            List<String> clients = database.getClientNames();
-            Map<String, Connection> connectionMap = database.getConnections();
-            for (String name: clients) {
-                Connection connection = connectionMap.get(name);
-                connection.writeMessage(message);
-            }
-//            byte[] text = message.getBytes();
-//            DatagramPacket dp = new DatagramPacket(text, text.length, InetAddress.getByName(Params.ADDRESS), 6226);
-//            DatagramPacket dp = new DatagramPacket(text, text.length);
-//            DatagramSocket ds = new DatagramSocket();
-//            ds.send(dp);
-//            ds.close();
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        List<String> clients = database.getClientNames();
+        Map<String, Connection> connectionMap = database.getConnections();
+        for (String name : clients) {
+            Connection connection = connectionMap.get(name);
+            connection.writeMessage(message);
+        }
     }
 }

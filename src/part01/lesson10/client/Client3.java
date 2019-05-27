@@ -7,9 +7,9 @@ import part01.lesson10.constants.Params;
  *
  * @author folkland
  */
-public class Client1 {
+public class Client3 {
 
     public static void main(String[] args) {
-        ClientImpl client = new ClientImpl("Client1", Params.SERVER_PORT, Params.ADDRESS);
+        ClientImpl client = new ClientImpl("Client3", Params.SERVER_PORT, Params.ADDRESS);
     }
 }
