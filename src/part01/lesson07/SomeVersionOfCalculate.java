@@ -25,7 +25,6 @@ public class SomeVersionOfCalculate {
     public long withoutThreads(int[] array) {
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < array.length; i++) {
-//            System.out.println(factorial.calculate(array[i]));
             factorial.calculate(array[i]);
         }
         return System.currentTimeMillis() - startTime;
@@ -42,7 +41,6 @@ public class SomeVersionOfCalculate {
             final int ai = i;
             new Thread(()->{
                 factorial.calculate(array[ai]);
-//                System.out.println(factorial.calculate(array[ai]));
             }, "Thread"+ai).start();
         }
         return System.currentTimeMillis() - startTime;
@@ -56,7 +54,6 @@ public class SomeVersionOfCalculate {
      */
     private long withPool(int[] array, ExecutorService executorService) {
         long startTime = System.currentTimeMillis();
-//        ExecutorService executorService = Executors.newWorkStealingPool();
         List<Future<BigInteger>> futures = new ArrayList<>();
         for (int i = 0; i < array.length; i++) {
             final int j = i;
@@ -67,7 +64,6 @@ public class SomeVersionOfCalculate {
         }
         try {
             for (Future future: futures) {
-//                System.out.println(future.get());
                 future.get();
             }
         } catch (ExecutionException e) {
@@ -154,7 +150,6 @@ public class SomeVersionOfCalculate {
      */
     private long combinePoolAndDivide(int[] array, ExecutorService executorService) {
         long startTime = System.currentTimeMillis();
-//        ExecutorService executorService = Executors.newWorkStealingPool();
         List<Future<BigInteger>> futures = new ArrayList<>();
         try {
             for (int i = 0; i < array.length; i++) {
@@ -165,7 +160,6 @@ public class SomeVersionOfCalculate {
                 ));
             }
             for (Future future: futures) {
-//                System.out.println(future.get());
                 future.get();
             }
         } catch (ExecutionException e) {
