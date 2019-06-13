@@ -52,6 +52,11 @@ public class UserDAOImpl implements UserDAO {
         return users;
     }
 
+    /**
+     * Add a few user, used batch process
+     * @param users
+     * @return
+     */
     @Override
     public boolean addUsers(List<User> users) {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_USER)) {
@@ -85,6 +90,12 @@ public class UserDAOImpl implements UserDAO {
         return addUsers(users);
     }
 
+    /**
+     * Get only one user
+     * @param loginId
+     * @param name
+     * @return
+     */
     @Override
     public User getUser(int loginId, String name) {
         User user = new User();

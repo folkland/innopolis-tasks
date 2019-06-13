@@ -10,7 +10,7 @@ import java.sql.SQLException;
  */
 public class ConnectionPostgre implements IConnection {
 
-    Connection connection;
+    private Connection connection;
 
     public ConnectionPostgre(String dbURL, String username, String password) {
         try {
@@ -28,6 +28,10 @@ public class ConnectionPostgre implements IConnection {
         return connection;
     }
 
+    /**
+     * Close connection
+     * @return
+     */
     @Override
     public boolean close() {
         try {

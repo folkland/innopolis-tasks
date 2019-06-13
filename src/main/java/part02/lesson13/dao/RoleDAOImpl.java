@@ -24,6 +24,10 @@ public class RoleDAOImpl implements RoleDAO {
         this.connection = connection;
     }
 
+    /**
+     * Get all roles from base
+     * @return
+     */
     @Override
     public List<Role> getRoles() {
         List<Role> roles = new ArrayList<>();
@@ -42,6 +46,11 @@ public class RoleDAOImpl implements RoleDAO {
         return roles;
     }
 
+    /**
+     * Add one role
+     * @param role
+     * @return
+     */
     @Override
     public boolean addRole(Role role) {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_ROLE)) {

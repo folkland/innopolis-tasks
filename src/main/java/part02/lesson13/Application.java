@@ -2,14 +2,11 @@ package part02.lesson13;
 
 import part02.lesson13.connection.BDConfiguration;
 import part02.lesson13.connection.ConnectionPostgre;
-import part02.lesson13.dao.RoleDAO;
-import part02.lesson13.dao.RoleDAOImpl;
-import part02.lesson13.entity.Role;
 
 import java.sql.Connection;
-import java.util.List;
 
 /**
+ * Application class for starting code
  * @author folkland
  */
 public class Application {

@@ -15,6 +15,9 @@ public class BDConfiguration {
     private String username;
     private String password;
 
+    /**
+     * Read config from property file
+     */
     public BDConfiguration() {
         String filePath = "config/bdconnection.property";
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath)) {

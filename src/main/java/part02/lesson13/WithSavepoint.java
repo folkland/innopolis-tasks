@@ -13,16 +13,20 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Class which contain other functions to testing code
  * @author folkland
  */
 public class WithSavepoint {
 
     private Connection connection;
 
-    public WithSavepoint(Connection connection) {
+    WithSavepoint(Connection connection) {
         this.connection = connection;
     }
 
+    /**
+     * Use savepoint and in this code not a trouble
+     */
     void insertsWithoutTrouble() {
         Savepoint savepoint = null;
         RoleDAO roleDAO = new RoleDAOImpl(connection);
@@ -63,6 +67,9 @@ public class WithSavepoint {
         }
     }
 
+    /**
+     * Use savepoint but in this code have a trouble
+     */
     void insertsWithTrouble() {
         Savepoint savepoint = null;
         UserDAO userDAO = new UserDAOImpl(connection);
@@ -121,6 +128,18 @@ public class WithSavepoint {
             }
         }
     }
+
+    /**
+     * Create user
+     * @param id
+     * @param name
+     * @param birthday
+     * @param loginId
+     * @param city
+     * @param email
+     * @param description
+     * @return
+     */
     private User createUser(int id, String name, Date birthday, int loginId, String city, String email, String description) {
         User user = new User();
         user.setId(id);
@@ -132,6 +151,14 @@ public class WithSavepoint {
         user.setDescription(description);
         return user;
     }
+
+    /**
+     * Create user role
+     * @param id
+     * @param userId
+     * @param roleId
+     * @return
+     */
     private UserRole createUserRole(int id, int userId, int roleId) {
         UserRole userRole = new UserRole();
         userRole.setId(id);
@@ -140,6 +167,9 @@ public class WithSavepoint {
         return userRole;
     }
 
+    /**
+     * Show in console all roles from base
+     */
     void showRoles() {
         RoleDAO roleDAO = new RoleDAOImpl(connection);
         List<Role> roles = roleDAO.getRoles();
@@ -148,6 +178,9 @@ public class WithSavepoint {
         }
     }
 
+    /**
+     * Show in console all users from base
+     */
     void showUsers() {
         UserDAO userDAO = new UserDAOImpl(connection);
         List<User> users = userDAO.getUsers();
@@ -156,6 +189,9 @@ public class WithSavepoint {
         }
     }
 
+    /**
+     * Show in console all user roles from base
+     */
     void showUserRoles() {
         UserRoleDAO userRoleDAO = new UserRoleDAOImpl(connection);
         List<UserRole> userRoles = userRoleDAO.getUsersRole();
@@ -164,6 +200,11 @@ public class WithSavepoint {
         }
     }
 
+    /**
+     * Show in console only one user from base
+     * @param name
+     * @param loginId
+     */
     void getUser(String name, int loginId) {
         UserDAO userDAO = new UserDAOImpl(connection);
         System.out.println(userDAO.getUser(loginId, name));
