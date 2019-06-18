@@ -1,5 +1,7 @@
 package part02.lesson13;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import part02.lesson13.dao.*;
 import part02.lesson13.entity.Role;
 import part02.lesson13.entity.User;
@@ -20,6 +22,8 @@ public class WithSavepoint {
 
     private Connection connection;
 
+    private Logger logger = LogManager.getLogger(WithSavepoint.class);
+
     WithSavepoint(Connection connection) {
         this.connection = connection;
     }
@@ -28,6 +32,7 @@ public class WithSavepoint {
      * Use savepoint and in this code not a trouble
      */
     void insertsWithoutTrouble() {
+        logger.info("insertsWithoutTrouble started");
         Savepoint savepoint = null;
         RoleDAO roleDAO = new RoleDAOImpl(connection);
         try {
@@ -38,8 +43,10 @@ public class WithSavepoint {
             role.setDescription("Role for usual user, without privileges");
             roleDAO.addRole(role);
             savepoint = connection.setSavepoint("A");
+            logger.info("insertsWithoutTrouble savepoint A done");
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("Error in insertsWithoutTrouble, savepoint A", e);
         }
         try {
             Role role = new Role();
@@ -48,21 +55,27 @@ public class WithSavepoint {
             role.setDescription("Role for super user, with privileges");
             roleDAO.addRole(role);
             savepoint = connection.setSavepoint("B");
+            logger.info("insertsWithoutTrouble savepoint B done");
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("Error in insertsWithoutTrouble, savepoint B", e);
             if (savepoint != null) {
                 try {
                     connection.rollback(savepoint);
+                    logger.info("rollback in insertsWithoutTrouble to savepoint A done");
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+//                    ex.printStackTrace();
+                    logger.error("Trouble in insertsWithoutTrouble then rollback to savepoint A", ex);
                 }
             }
         } finally {
             try {
                 connection.commit();
                 connection.setAutoCommit(true);
+                logger.info("Commit in insertsWithoutTrouble done");
             } catch (SQLException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                logger.error("Trouble in insertsWithoutTrouble then commit", e);
             }
         }
     }
@@ -71,6 +84,7 @@ public class WithSavepoint {
      * Use savepoint but in this code have a trouble
      */
     void insertsWithTrouble() {
+        logger.info("insertsWithTrouble started");
         Savepoint savepoint = null;
         UserDAO userDAO = new UserDAOImpl(connection);
         UserRoleDAO userRoleDAO = new UserRoleDAOImpl(connection);
@@ -80,8 +94,10 @@ public class WithSavepoint {
             userDAO.addUser(user);
             userRoleDAO.addUserRole(createUserRole(1, user.getId(), 1));
             savepoint = connection.setSavepoint("A");
+            logger.info("insertsWithTrouble savepoint A done");
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("Error in insertsWithTrouble, savepoint A", e);
         }
         try {
             List<User> users = new ArrayList<>();
@@ -95,13 +111,17 @@ public class WithSavepoint {
                 k++;
             }
             savepoint = connection.setSavepoint("B");
+            logger.info("insertsWithTrouble savepoint B done");
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("Error in insertsWithTrouble, savepoint B", e);
             if (savepoint != null) {
                 try {
                     connection.rollback(savepoint);
+                    logger.info("rollback in insertsWithTrouble to savepoint A done");
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+//                    ex.printStackTrace();
+                    logger.error("Trouble in insertsWithTrouble then rollback to savepoint A", ex);
                 }
             }
         }
@@ -110,21 +130,27 @@ public class WithSavepoint {
             userDAO.addUser(user);
             userRoleDAO.addUserRole(createUserRole(1, user.getId(), 1));
             savepoint = connection.setSavepoint("C");
+            logger.info("insertsWithTrouble savepoint C done");
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("Error in insertsWithTrouble, savepoint C", e);
             if (savepoint != null) {
                 try {
                     connection.rollback(savepoint);
+                    logger.info("rollback in insertsWithTrouble to savepoint B done");
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+//                    ex.printStackTrace();
+                    logger.error("Trouble in insertsWithTrouble then rollback to savepoint B", ex);
                 }
             }
         } finally {
             try {
                 connection.commit();
                 connection.setAutoCommit(true);
+                logger.info("Commit in insertsWithTrouble done");
             } catch (SQLException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                logger.error("Trouble in insertsWithTrouble then commit", e);
             }
         }
     }

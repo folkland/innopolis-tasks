@@ -12,10 +12,11 @@ public class ConnectionPostgre implements IConnection {
 
     private Connection connection;
 
-    public ConnectionPostgre(String dbURL, String username, String password) {
+    public ConnectionPostgre() {
+        BDConfiguration configuration = new BDConfiguration();
         try {
             Class.forName("org.postgresql.Driver");
-            this.connection = DriverManager.getConnection(dbURL, username, password);
+            this.connection = DriverManager.getConnection(configuration.getDburl(), configuration.getUsername(), configuration.getPassword());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

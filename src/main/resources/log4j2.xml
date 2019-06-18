@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+    <Appenders>
+        <JDBC name="postgresql" tablename="inno.logs">
+            <DriverManager connectionString="jdbc:postgresql://localhost:5432/postgres" userName="postgres" password="123" driverClassName="org.postgresql.Driver" />
+            <Column name="date" isEventTimestamp="true" />
+            <Column name="level" pattern="%level" isUnicode="false" />
+            <Column name="message" pattern="%message" isUnicode="false" />
+            <Column name="exception" pattern="%ex{full}" isUnicode="false" />
+        </JDBC>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="postgresql"/>
+        </Root>
+    </Loggers>
+</Configuration>

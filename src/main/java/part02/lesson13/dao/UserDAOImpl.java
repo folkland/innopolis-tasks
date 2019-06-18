@@ -1,5 +1,7 @@
 package part02.lesson13.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import part02.lesson13.entity.User;
 
 import java.sql.Connection;
@@ -17,6 +19,7 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
     private final Connection connection;
+    private Logger logger = LogManager.getLogger(UserDAOImpl.class);
 
     private final String SELECT_ALL_USER = "select id, name, birthday, login_id, city, email, description from inno.user";
     private final String INSERT_USER = "insert into inno.user(id, name, birthday, login_id, city, email, description) values(?,?,?,?,?,?,?)";
@@ -47,7 +50,8 @@ public class UserDAOImpl implements UserDAO {
                 users.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("getUsers",e);
         }
         return users;
     }
@@ -73,7 +77,8 @@ public class UserDAOImpl implements UserDAO {
             statement.executeBatch();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("addUser",e);
             return false;
         }
     }
@@ -112,7 +117,8 @@ public class UserDAOImpl implements UserDAO {
             user.setEmail(resultSet.getString(6));
             user.setDescription(resultSet.getString(7));
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("getUser",e);
         }
         return user;
     }

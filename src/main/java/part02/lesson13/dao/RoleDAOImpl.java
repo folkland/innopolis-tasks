@@ -1,5 +1,7 @@
 package part02.lesson13.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import part02.lesson13.entity.Role;
 
 import java.sql.Connection;
@@ -16,6 +18,7 @@ import java.util.List;
 public class RoleDAOImpl implements RoleDAO {
 
     private final Connection connection;
+    private Logger logger = LogManager.getLogger(RoleDAOImpl.class);
 
     private final String SELECT_ROLES = "select id, name, description from inno.role";
     private final String INSERT_ROLE = "insert into inno.role(id, name, description) values (?, ?, ?)";
@@ -41,7 +44,8 @@ public class RoleDAOImpl implements RoleDAO {
                 roles.add(role);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("getRoles",e);
         }
         return roles;
     }
@@ -60,7 +64,8 @@ public class RoleDAOImpl implements RoleDAO {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("addRole",e);
             return false;
         }
     }

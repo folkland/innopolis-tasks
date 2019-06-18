@@ -1,6 +1,7 @@
 package part02.lesson13;
 
-import part02.lesson13.connection.BDConfiguration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import part02.lesson13.connection.ConnectionPostgre;
 
 import java.sql.Connection;
@@ -11,17 +12,22 @@ import java.sql.Connection;
  */
 public class Application {
 
+    private static Logger logger = LogManager.getLogger(Application.class);
+
     public static void main(String[] args) {
-        BDConfiguration configuration = new BDConfiguration();
-        ConnectionPostgre postgre = new ConnectionPostgre(configuration.getDburl(), configuration.getUsername(), configuration.getPassword());
+        ConnectionPostgre postgre = new ConnectionPostgre();
         Connection connection = postgre.getConnection();
+        logger.info("Connection created");
         WithSavepoint withSavepoint = new WithSavepoint(connection);
         withSavepoint.insertsWithoutTrouble();
         withSavepoint.insertsWithTrouble();
+        logger.info("All inserts done");
         withSavepoint.showRoles();
         withSavepoint.showUsers();
         withSavepoint.showUserRoles();
+        logger.info("All data from db showed");
         withSavepoint.getUser("John", 10);
         postgre.close();
+        logger.info("Connection closed");
     }
 }
