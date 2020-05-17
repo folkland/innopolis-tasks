@@ -15,6 +15,8 @@ public class SomeClass implements Serializable {
     double dbl;
     boolean isSome;
     byte[] fewByte;
+    String[] arr = {"asdas", "sadas"};
+    int[] ints = {4,5,234};
     SubClass subClass;
 
     public SomeClass(String str, double dbl, boolean isSome, byte[] fewByte) {
